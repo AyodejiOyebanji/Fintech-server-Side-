@@ -104,6 +104,7 @@ const personalDetails = (req, res) => {
 };
 
 const uploadImage = (req, res) => {
+  console.log("hello")
   const email = req.params.currentUser;
   cloudinary.v2.uploader.upload(req.body.profile_pics, (err, result) => {
     if (err) {
@@ -115,6 +116,8 @@ const uploadImage = (req, res) => {
         { profile_pics: result.secure_url },
         (err) => {
           if (err) {
+            console.log(err);
+            
             res
               .status(500)
               .send({ message: 'Something went wrong', status: false });
