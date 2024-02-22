@@ -53,7 +53,17 @@ const getMail = (email) => {
         from: process.env.GMAIL_ACCOUNT,
         to: email,
         subject: 'Penny Wise Verification code',
-        text: `Your Verification code is ${user.confirm_code}`,
+      
+        html: `
+        <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: auto;">
+          <p>Hello,${user.first_name} </p>
+          <p>Thank you for using Penny Wise! Your verification code is:</p>
+          <h2 style="color: #007bff;">${user.confirm_code}</h2>
+          <p>Please use this code to verify your account.</p>
+          <p>If you didn't request this code, you can ignore this email.</p>
+          <p>Best regards,<br/>Penny Wise Team</p>
+        </div>
+      `,
       };
       mailTransporter.sendMail(details, (err) => {
         if (err) {
@@ -104,7 +114,7 @@ const personalDetails = (req, res) => {
 };
 
 const uploadImage = (req, res) => {
-  console.log("hello")
+ 
   const email = req.params.currentUser;
   cloudinary.v2.uploader.upload(req.body.profile_pics, (err, result) => {
     if (err) {
@@ -148,14 +158,19 @@ const sendWelcomeMail = (email) => {
         from: process.env.GMAIL_ACCOUNT,
         to: email,
         subject: 'Penny APP SETUP SUCCESSFUL',
-        text: `Dear ${user.first_name} ${user.first_name} 
-               Welcome to Mayed!
-              <p>I know you are excited to sign up with us and see how easily you could track your income and collect soft loan. I built Mayed to help individual especially the students to make progress in their own way.  </p>
-              <p>
-              <b>Best wishes </b>
-              </p>
-              <p>Ayodeji Oyebanji</p>
-              <p>Founder, Penny</p>`,
+        html:`<p>Dear ${user.first_name} ${user.last_name},</p>
+
+        <p>Welcome to Mayed!</p>
+        
+        <p>I'm thrilled to have you on board. As you embark on your journey with us, I encourage you to take full advantage of Mayed's features by opening two accounts. This will allow you to explore all the functionalities and experience the seamless tracking of your income and the convenience of collecting soft loans.</p>
+        
+        <p>I designed Mayed with the goal of helping individuals, especially students, make significant progress in managing their finances.</p>
+        
+        <p><b>Best wishes,</b></p>
+        
+        <p>Ayodeji Oyebanji<br>
+        Founder, Penny</p>
+        `,
       };
       mailTransporter.sendMail(details, (err) => {
         if (err) {
